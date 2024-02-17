@@ -1,6 +1,7 @@
 package org.example;
 
 import org.example.Macros.Macro;
+import org.example.Macros.MacronutrientBreakdown;
 
 public class Food {
     private String name;
@@ -13,6 +14,9 @@ public class Food {
         this.carbs = carbs;
         this.protein = protein;
         this.fat = fat;
+    }
+    public MacronutrientBreakdown calculateMacronutrientBreakdown(double carbsAmount, double proteinAmount, double fatAmount) {
+        return new MacronutrientBreakdown(carbsAmount, proteinAmount, fatAmount);
     }
 
     public double calculateTotalCalories(double carbsAmount, double proteinAmount, double fatAmount) {
