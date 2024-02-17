@@ -11,19 +11,29 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Do you want to enter an ingredient manually or select one?");
-        System.out.println("1. Select a pre-created meal");
-        System.out.println("2. Enter an ingredient manually");
+        boolean done = false;
+        while (!done) {
+            System.out.println("Do you want to enter an ingredient manually or select one?");
+            System.out.println("1. Select a pre-created meal");
+            System.out.println("2. Enter an ingredient manually");
+            System.out.println("3. Done");
 
+            int choice = scanner.nextInt();
 
-        int choice = scanner.nextInt();
-
-        if (choice == 1) {
-            selectPreCreatedMeal(scanner);
-        } else if (choice == 2) {
-            enterIngredientManually(scanner);
-        } else {
-            System.out.println("Invalid choice. Please enter 1 or 2.");
+            switch (choice) {
+                case 1:
+                    selectPreCreatedMeal(scanner);
+                    break;
+                case 2:
+                    enterIngredientManually(scanner);
+                    break;
+                case 3:
+                    done = true;
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please enter 1, 2, or 3.");
+                    break;
+            }
         }
     }
 
@@ -68,8 +78,9 @@ public class Main {
     }
 
     private static void enterIngredientManually(Scanner scanner) {
+        scanner.nextLine();
         System.out.println("Enter Food Name:");
-        String foodName = scanner.next();
+        String foodName = scanner.nextLine();
 
         System.out.println("Enter the amount of carbs in grams:");
         double carbsAmount = scanner.nextDouble();
@@ -85,10 +96,14 @@ public class Main {
         double totalCalories = foodObj.calculateTotalCalories(carbsAmount, proteinAmount, fatAmount);
         MacronutrientBreakdown breakdown = foodObj.calculateMacronutrientBreakdown(carbsAmount, proteinAmount, fatAmount);
 
+        System.out.println();
         System.out.println("Total calories in " + foodName + ": " + totalCalories);
+        System.out.println();
         System.out.println("Macronutrient breakdown:");
         System.out.println("Carbs: " + breakdown.getCarbs() + "g");
         System.out.println("Protein: " + breakdown.getProtein() + "g");
         System.out.println("Fat: " + breakdown.getFat() + "g");
+        System.out.println();
+        System.out.println();
     }
 }
