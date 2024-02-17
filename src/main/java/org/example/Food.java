@@ -3,6 +3,7 @@ package org.example;
 import org.example.Macros.Macro;
 import org.example.Macros.MacronutrientBreakdown;
 
+
 public class Food {
     private String name;
     private Macro carbs;

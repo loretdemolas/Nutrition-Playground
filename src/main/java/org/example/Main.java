@@ -1,16 +1,13 @@
 package org.example;
 
-import org.example.Macros.Carbohydrates;
-import org.example.Macros.Fat;
-import org.example.Macros.MacronutrientBreakdown;
-import org.example.Macros.Protein;
+import org.example.Macros.*;
 
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+    private static Scanner scanner = new Scanner(System.in);
 
+    public static void main(String[] args) {
         boolean done = false;
         while (!done) {
             System.out.println("Do you want to enter an ingredient manually or select one?");
@@ -22,10 +19,10 @@ public class Main {
 
             switch (choice) {
                 case 1:
-                    selectPreCreatedMeal(scanner);
+                    selectPreCreatedMeal();
                     break;
                 case 2:
-                    enterIngredientManually(scanner);
+                    enterIngredientManually();
                     break;
                 case 3:
                     done = true;
@@ -37,7 +34,7 @@ public class Main {
         }
     }
 
-    private static void selectPreCreatedMeal(Scanner scanner) {
+    private static void selectPreCreatedMeal() {
         System.out.println("Do you want to enter Chicken or Steak?");
         System.out.println("1. Chicken");
         System.out.println("2. Steak");
@@ -65,20 +62,11 @@ public class Main {
                 return;
         }
 
-        Food foodObj = new Food(foodName, new Carbohydrates(), new Protein(), new Fat());
-
-        double totalCalories = foodObj.calculateTotalCalories(carbsAmount, proteinAmount, fatAmount);
-        MacronutrientBreakdown breakdown = foodObj.calculateMacronutrientBreakdown(carbsAmount, proteinAmount, fatAmount);
-
-        System.out.println("Total calories in " + foodName + ": " + totalCalories);
-        System.out.println("Macronutrient breakdown:");
-        System.out.println("Carbs: " + breakdown.getCarbs() + "g");
-        System.out.println("Protein: " + breakdown.getProtein() + "g");
-        System.out.println("Fat: " + breakdown.getFat() + "g");
+        addFood(foodName, carbsAmount, proteinAmount, fatAmount);
     }
 
-    private static void enterIngredientManually(Scanner scanner) {
-        scanner.nextLine();
+    private static void enterIngredientManually() {
+        scanner.nextLine(); // Consume newline character
         System.out.println("Enter Food Name:");
         String foodName = scanner.nextLine();
 
@@ -91,11 +79,25 @@ public class Main {
         System.out.println("Enter the amount of fat in grams:");
         double fatAmount = scanner.nextDouble();
 
+        addFood(foodName, carbsAmount, proteinAmount, fatAmount);
+    }
+
+    private static void addFood(String foodName, double carbsAmount, double proteinAmount, double fatAmount) {
         Food foodObj = new Food(foodName, new Carbohydrates(), new Protein(), new Fat());
 
         double totalCalories = foodObj.calculateTotalCalories(carbsAmount, proteinAmount, fatAmount);
         MacronutrientBreakdown breakdown = foodObj.calculateMacronutrientBreakdown(carbsAmount, proteinAmount, fatAmount);
+        DietBreakdown.addFood(totalCalories, carbsAmount, proteinAmount, fatAmount);
 
+        printDietBreakdown(foodName, totalCalories, breakdown);
+    }
+
+    private static void printDietBreakdown(String foodName, double totalCalories, MacronutrientBreakdown breakdown) {
+        System.out.println();
+        System.out.println("Total calories in Diet: " + DietBreakdown.getTotalCalories() + " Kcal");
+        System.out.println("Total Carbohydrates in Diet: " + DietBreakdown.getTotalCarbs() + " g");
+        System.out.println("Total Protein in Diet:" + DietBreakdown.getTotalProtein() + " g");
+        System.out.println("Total Fat in Diet" + DietBreakdown.getTotalFat() + " g");
         System.out.println();
         System.out.println("Total calories in " + foodName + ": " + totalCalories);
         System.out.println();
